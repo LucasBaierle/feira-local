@@ -3,6 +3,8 @@ import Product from "@/models/Product";
 import Property from "@/models/Property";
 import SearchProductsClient from "./SearchProductsClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function BuscarProdutosPage() {
   await connectDB();
 
