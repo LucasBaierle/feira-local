@@ -6,6 +6,9 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { connectDB } from "@/lib/mongodb";
 import Order from "@/models/Order";
 import OrderItem from "@/models/OrderItem";
+import Product from "@/models/Product";
+import Property from "@/models/Property";
+import User from "@/models/User";
 
 export async function GET(req, { params }) {
   try {
