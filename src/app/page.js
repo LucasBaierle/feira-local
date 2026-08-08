@@ -8,6 +8,8 @@ import HeaderInstallButton from "@/components/HeaderInstallButton";
 import Link from "next/link";
 import { Store, ShoppingBag, Tractor, ChevronRight, Leaf } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const session = await getServerSession(authOptions);
   let hasProperty = false;
