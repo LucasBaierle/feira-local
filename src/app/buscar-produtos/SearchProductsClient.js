@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import CartButton from "@/components/CartButton";
 import { ArrowLeft, Search, Leaf, Store, ShoppingBag, Check } from "lucide-react";
 
 export default function SearchProductsClient({ initialProducts }) {
+  const router = useRouter();
   const [products, setProducts] = useState(initialProducts);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("todas");
@@ -43,7 +45,9 @@ export default function SearchProductsClient({ initialProducts }) {
     handleFilter(search, selectedCategory);
   }
 
-  function addToCart(product) {
+  function addToCart(e, product) {
+    e.stopPropagation();
+
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     const existingIndex = cart.findIndex((item) => item._id === product._id);
 
@@ -71,12 +75,21 @@ export default function SearchProductsClient({ initialProducts }) {
 
   const categories = [
     { id: "todas", label: "Todos" },
-    { id: "verduras", label: "Verduras" },
-    { id: "legumes", label: "Legumes" },
-    { id: "frutas", label: "Frutas" },
-    { id: "graos", label: "Grãos" },
-    { id: "laticinios", label: "Laticínios" },
-    { id: "outros", label: "Outros" },
+    { id: "Verduras", label: "Verduras" },
+    { id: "Frutas", label: "Frutas" },
+    { id: "Legumes", label: "Legumes" },
+    { id: "Temperos", label: "Temperos" },
+    { id: "Queijos e Laticínios", label: "Queijos e Laticínios" },
+    { id: "Ovos", label: "Ovos" },
+    { id: "Carnes e Embutidos", label: "Carnes e Embutidos" },
+    { id: "Bebidas", label: "Bebidas" },
+    { id: "Mel e Derivados", label: "Mel e Derivados" },
+    { id: "Doces e Geleias", label: "Doces e Geleias" },
+    { id: "Panificados", label: "Panificados" },
+    { id: "Mudas e Sementes", label: "Mudas e Sementes" },
+    { id: "Lenha e Madeira", label: "Lenha e Madeira" },
+    { id: "Artesanato", label: "Artesanato" },
+    { id: "Outros", label: "Outros" },
   ];
 
   return (
@@ -147,7 +160,8 @@ export default function SearchProductsClient({ initialProducts }) {
             {products.map((product) => (
               <div
                 key={product._id}
-                className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex flex-col gap-4"
+                onClick={() => router.push(`/produto/${product._id}`)}
+                className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex flex-col gap-4 cursor-pointer transition-transform hover:scale-[1.02] hover:border-green-500 hover:shadow-md"
               >
                 <div className="flex gap-4 items-center">
                   <div className="w-20 h-20 rounded-xl bg-gray-50 flex items-center justify-center overflow-hidden shrink-0 border border-gray-100">
@@ -185,7 +199,7 @@ export default function SearchProductsClient({ initialProducts }) {
 
                 <button
                   type="button"
-                  onClick={() => addToCart(product)}
+                  onClick={(e) => addToCart(e, product)}
                   className={`flex items-center justify-center gap-2 w-full py-3 rounded-xl font-bold text-base active:scale-95 transition-all shadow-sm border-2 ${
                     addedId === product._id
                       ? "bg-blue-50 text-blue-700 border-blue-200"

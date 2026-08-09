@@ -15,7 +15,7 @@ export default function CreateProductForm({ propertyId }) {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [unit, setUnit] = useState("kg");
-  const [category, setCategory] = useState("verduras");
+  const [category, setCategory] = useState("Verduras");
   const [stockQuantity, setStockQuantity] = useState("");
 
   const [imageFile, setImageFile] = useState(null);
@@ -31,9 +31,63 @@ export default function CreateProductForm({ propertyId }) {
     }
   }
 
+  async function compressImage(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          let width = img.width;
+          let height = img.height;
+          const MAX_WIDTH = 1280;
+          const MAX_HEIGHT = 1280;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".webp", {
+                  type: "image/webp",
+                  lastModified: Date.now(),
+                });
+                resolve(compressedFile);
+              } else {
+                reject(new Error("Falha ao comprimir imagem"));
+              }
+            },
+            "image/webp",
+            0.8
+          );
+        };
+        img.onerror = (error) => reject(error);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
   async function uploadImage(file) {
+    const compressedFile = await compressImage(file);
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", compressedFile);
 
     const response = await fetch("/api/upload", {
       method: "POST",
@@ -46,7 +100,7 @@ export default function CreateProductForm({ propertyId }) {
       throw new Error(data.error || "Erro ao fazer upload da imagem");
     }
 
-    return data.url;
+    return data.url || data.secure_url;
   }
 
   async function handleSubmit(e) {
@@ -198,13 +252,19 @@ export default function CreateProductForm({ propertyId }) {
                   onChange={(e) => setUnit(e.target.value)}
                   className="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-4 text-base font-medium text-gray-900 focus:bg-white focus:border-green-500 outline-none transition-all shadow-sm cursor-pointer"
                 >
-                  <option value="kg">kg</option>
-                  <option value="unidade">unidade</option>
-                  <option value="maço">maço</option>
-                  <option value="caixa">caixa</option>
-                  <option value="duzia">dúzia</option>
-                  <option value="g">g</option>
-                  <option value="litro">litro</option>
+                  <option value="Unidade">Unidade</option>
+                  <option value="Quilo (kg)">Quilo (kg)</option>
+                  <option value="Gramas (g)">Gramas (g)</option>
+                  <option value="Litro (L)">Litro (L)</option>
+                  <option value="Mililitro (ml)">Mililitro (ml)</option>
+                  <option value="Maço">Maço</option>
+                  <option value="Bandeja">Bandeja</option>
+                  <option value="Caixa">Caixa</option>
+                  <option value="Dúzia">Dúzia</option>
+                  <option value="Meia Dúzia">Meia Dúzia</option>
+                  <option value="Saco">Saco</option>
+                  <option value="Feixe">Feixe</option>
+                  <option value="Metro Cúbico (m³)">Metro Cúbico (m³)</option>
                 </select>
               </div>
             </div>
@@ -217,12 +277,21 @@ export default function CreateProductForm({ propertyId }) {
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-4 text-base font-medium text-gray-900 focus:bg-white focus:border-green-500 outline-none transition-all shadow-sm capitalize cursor-pointer"
                 >
-                  <option value="verduras">Verduras</option>
-                  <option value="legumes">Legumes</option>
-                  <option value="frutas">Frutas</option>
-                  <option value="graos">Grãos</option>
-                  <option value="laticinios">Laticínios</option>
-                  <option value="outros">Outros</option>
+                  <option value="Verduras">Verduras</option>
+                  <option value="Legumes">Legumes</option>
+                  <option value="Frutas">Frutas</option>
+                  <option value="Temperos">Temperos</option>
+                  <option value="Queijos e Laticínios">Queijos e Laticínios</option>
+                  <option value="Ovos">Ovos</option>
+                  <option value="Carnes e Embutidos">Carnes e Embutidos</option>
+                  <option value="Bebidas">Bebidas</option>
+                  <option value="Mel e Derivados">Mel e Derivados</option>
+                  <option value="Doces e Geleias">Doces e Geleias</option>
+                  <option value="Panificados">Panificados</option>
+                  <option value="Mudas e Sementes">Mudas e Sementes</option>
+                  <option value="Lenha e Madeira">Lenha e Madeira</option>
+                  <option value="Artesanato">Artesanato</option>
+                  <option value="Outros">Outros</option>
                 </select>
               </div>
 

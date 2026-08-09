@@ -31,6 +31,10 @@ const propertySchema = new mongoose.Schema(
       state: { type: String, required: true },
       zipCode: { type: String, required: true }
     },
+    mapsLink: {
+      type: String,
+      default: ""
+    },
     bannerImageUrl: { 
       type: String,
       required: true

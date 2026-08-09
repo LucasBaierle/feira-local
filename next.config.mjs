@@ -2,7 +2,7 @@
 const nextConfig = {
   reactCompiler: true,
   allowedDevOrigins: [
-    'educators-dealt-supplier-phantom.trycloudflare.com'
+    'http://localhost:3000', 'definitions-difficulty-castle-continent.trycloudflare.com'
   ],
   images: {
     remotePatterns: [

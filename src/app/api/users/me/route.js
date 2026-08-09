@@ -34,13 +34,13 @@ export async function PUT(req) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
     }
 
-    const { name, phone, address } = await req.json();
+    const { name, phone, address, mapsLink } = await req.json();
 
     await connectDB();
 
     const updatedUser = await User.findByIdAndUpdate(
       session.user.id,
-      { name, phone, address },
+      { name, phone, address, mapsLink },
       { new: true, runValidators: true }
     ).lean();
 

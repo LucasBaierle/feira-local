@@ -52,6 +52,10 @@ export default async function MinhaPropriedadePage() {
     ? getFormattedAddress(property.address) 
     : property.city || "";
 
+  const mapsHref = property.mapsLink 
+    ? property.mapsLink 
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressString)}`;
+
   return (
     <main className="min-h-screen bg-gray-50 p-4 pb-12">
       <div className="max-w-lg mx-auto space-y-6">
@@ -171,7 +175,7 @@ export default async function MinhaPropriedadePage() {
                     <h3 className="font-bold text-gray-900 text-sm">Endereço</h3>
                     {addressString ? (
                       <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressString)}`}
+                        href={mapsHref}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-green-700 hover:underline font-medium text-sm block mt-0.5 leading-relaxed"

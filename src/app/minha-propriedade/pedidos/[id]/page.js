@@ -284,7 +284,7 @@ export default function ProprietarioDetalhePedidoPage({ params: paramsPromise })
               <div className="min-w-0 flex-1">
                 {order.customerId?.address ? (
                   <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getFormattedAddress(order.customerId.address))}`}
+                    href={order.customerId?.mapsLink ? order.customerId.mapsLink : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getFormattedAddress(order.customerId.address))}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-green-700 hover:underline font-medium text-xs block leading-relaxed"

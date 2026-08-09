@@ -28,8 +28,8 @@ export async function GET(req, { params }) {
     await connectDB();
 
     const order = await Order.findById(orderId)
-      .populate("propertyId", "name bannerImageUrl city state ownerId owner user address phone")
-      .populate("customerId", "name email phone address")
+      .populate("propertyId", "name bannerImageUrl city state ownerId owner user address phone mapsLink")
+      .populate("customerId", "name email phone address mapsLink")
       .lean();
 
     if (!order) {

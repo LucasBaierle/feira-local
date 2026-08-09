@@ -14,6 +14,7 @@ export default function ProfilePage() {
     name: "",
     email: "",
     phone: "",
+    mapsLink: "",
     avatarUrl: "",
     address: {
       street: "",
@@ -40,6 +41,7 @@ export default function ProfilePage() {
         name: data.name || "",
         email: data.email || "",
         phone: data.phone || "",
+        mapsLink: data.mapsLink || "",
         avatarUrl: data.avatarUrl || "",
         address: {
           street: data.address?.street || "",
@@ -102,6 +104,7 @@ export default function ProfilePage() {
           name: formData.name,
           phone: formData.phone,
           address: formData.address,
+          mapsLink: formData.mapsLink,
         }),
       });
 
@@ -121,9 +124,9 @@ export default function ProfilePage() {
     }
   }
 
-  function getInputClass(value, extraClasses = "") {
+  function getInputClass(value, extraClasses = "", isRequired = true) {
     const base = `w-full border-2 rounded-2xl p-4 text-base outline-none transition-all ${extraClasses}`;
-    if (hasSubmitted && (!value || value.trim() === "")) {
+    if (isRequired && hasSubmitted && (!value || value.trim() === "")) {
       return `${base} border-red-500 bg-red-50 focus:bg-white focus:border-red-600 placeholder:text-red-300 text-red-900`;
     }
     return `${base} border-gray-100 bg-gray-50 focus:bg-white focus:border-green-500`;
@@ -308,6 +311,19 @@ export default function ProfilePage() {
                   className={getInputClass(formData.address.state, "uppercase")}
                 />
               </div>
+            </div>
+
+            <div className="mt-4 pt-2">
+              <label className="block text-base font-semibold text-gray-700 mb-2">
+                Link do Google Maps (Opcional)
+              </label>
+              <input
+                type="url"
+                placeholder="Ex: https://maps.app.goo.gl/..."
+                value={formData.mapsLink}
+                onChange={(e) => setFormData({ ...formData, mapsLink: e.target.value })}
+                className={getInputClass(formData.mapsLink, "", false)}
+              />
             </div>
           </section>
 

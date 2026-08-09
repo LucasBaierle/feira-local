@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-
     email: {
       type: String,
       required: true,
@@ -15,18 +14,15 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
-
     googleId: {
       type: String,
       unique: true,
       sparse: true,
     },
-
     phone: {
       type: String,
       default: "",
     },
-
     address: {
       street: {
         type: String,
@@ -53,13 +49,15 @@ const userSchema = new mongoose.Schema(
         default: "",
       },
     },
-
+    mapsLink: {
+      type: String,
+      default: "",
+    },
     role: {
       type: String,
       enum: ["cliente", "produtor"],
       default: "cliente",
     },
-
     avatarUrl: String,
   },
   {
@@ -67,6 +65,4 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-export default
-  mongoose.models.User ||
-  mongoose.model("User", userSchema);
+export default mongoose.models.User || mongoose.model("User", userSchema);

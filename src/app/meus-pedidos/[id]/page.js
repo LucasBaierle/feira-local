@@ -236,7 +236,7 @@ export default function DetalhePedidoPage({ params: paramsPromise }) {
               <div className="min-w-0 flex-1">
                 {order.propertyId?.address ? (
                   <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getFormattedAddress(order.propertyId.address))}`}
+                    href={order.propertyId?.mapsLink ? order.propertyId.mapsLink : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getFormattedAddress(order.propertyId.address))}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-green-700 hover:underline font-medium text-xs block leading-relaxed"

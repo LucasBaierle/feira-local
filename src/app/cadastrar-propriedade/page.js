@@ -16,6 +16,7 @@ export default function CreatePropertyForm() {
     name: "",
     description: "",
     phone: "",
+    mapsLink: "",
     bannerImageUrl: "",
     ownerImageUrl: "",
     address: {
@@ -171,6 +172,7 @@ export default function CreatePropertyForm() {
           phone: formData.phone,
           address: formData.address,
           city: formData.address.city,
+          mapsLink: formData.mapsLink,
           bannerImageUrl,
           ownerImageUrl,
         }),
@@ -195,9 +197,9 @@ export default function CreatePropertyForm() {
     }
   }
 
-  function getInputClass(value, extraClasses = "") {
+  function getInputClass(value, extraClasses = "", isRequired = true) {
     const base = `w-full border-2 rounded-2xl p-4 text-base outline-none transition-all ${extraClasses}`;
-    if (hasSubmitted && !value) {
+    if (isRequired && hasSubmitted && (!value || String(value).trim() === "")) {
       return `${base} border-red-500 bg-red-50 focus:bg-white focus:border-red-600 placeholder:text-red-300 text-red-900`;
     }
     return `${base} border-gray-100 bg-gray-50 focus:bg-white focus:border-green-500`;
@@ -396,6 +398,19 @@ export default function CreatePropertyForm() {
                   className={getInputClass(formData.address.state, "uppercase")}
                 />
               </div>
+            </div>
+
+            <div className="mt-4 pt-2">
+              <label className="block text-base font-semibold text-gray-700 mb-2">
+                Link do Google Maps (Opcional)
+              </label>
+              <input
+                type="url"
+                placeholder="Ex: https://maps.app.goo.gl/..."
+                value={formData.mapsLink}
+                onChange={(e) => setFormData({ ...formData, mapsLink: e.target.value })}
+                className={getInputClass(formData.mapsLink, "", false)}
+              />
             </div>
           </section>
 
